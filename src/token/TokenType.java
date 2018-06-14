@@ -1,1 +1,5 @@
-package token;public enum TokenType{    Keyword,Identifier,Constant,Operator,Dlimiter,Comment}
+package token;
+
+public enum TokenType{
+    Keyword,Identifier,Constant,Operator,Dlimiter,Comment
+}
