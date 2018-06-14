@@ -1,0 +1,18 @@
+program -> compoundstmt
+stmt ->  decl | ifstmt  |  whilestmt  |  assgstmt  |  compoundstmt
+compoundstmt ->  { stmts }
+stmts ->  stmt stmts   |   none
+ifstmt ->  if ( boolexpr ) then stmt else stmt
+whilestmt ->  while ( boolexpr ) stmt
+assgstmt ->  ID = arithexpr ;
+decl-> type list;
+type-> int | real
+list-> ID list1
+list1->, list | none
+boolexpr  ->  arithexpr boolop arithexpr
+boolop ->   <  |  >  |  <=  |  >=  | ==
+arithexpr  ->  multexpr arithexprprime
+arithexprprime ->  + multexpr arithexprprime  |  - multexpr arithexprprime  |   none
+multexpr ->  simpleexpr  multexprprime
+multexprprime ->  * simpleexpr multexprprime  |  / simpleexpr multexprprime  |   none
+simpleexpr ->  ID  |  NUM  |  ( arithexpr )
