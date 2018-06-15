@@ -3,12 +3,12 @@ package parser;
 import java.util.ArrayList;
 
 public class Production {
-    //select¼¯
+    //selecté›†
     ArrayList<String> select = new ArrayList<>();
     /**
-     * ²úÉúÊ½µÄÊµÌåÀà
-     * ±ÈÈç stmts -> stmt stmts
-     * left ¶ÔÓ¦ stmts right ¶ÔÓ¦ stmt stmts
+     * äº§ç”Ÿå¼çš„å®žä½“ç±»
+     * æ¯”å¦‚ stmts -> stmt stmts
+     * left å¯¹åº” stmts right å¯¹åº” stmt stmts
      */
     private String left;
     private String[] right;
