@@ -10,64 +10,63 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import latex.MyLatex;
+import latex.Latex;
 
 
 public class Main extends Application {
+    public static void main(String[] args) {
+        launch( args );
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FlowPane root = new FlowPane();
-        root.setHgap(10);
-        root.setVgap(20);
-        root.setPadding(new Insets(15,15,15,15));
+        root.setHgap( 10 );
+        root.setVgap( 20 );
+        root.setPadding( new Insets( 15, 15, 15, 15 ) );
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        final TextArea text = new TextArea("int i = 0;\ni = 1 + 5.12e+15");
-        text.setStyle("-fx-highlight-fill: #d3ca47; -fx-highlight-text-fill: firebrick; -fx-font-size: 20px;");
-        Button btn=new Button("Start");
-        root.getChildren().add(btn);
-        root.getChildren().add(text);
-        text.selectRange(4,5);
+        final TextArea text = new TextArea( "int i = 0;\ni = 1 + 5.12e+15" );
+        text.setStyle( "-fx-highlight-fill: #d3ca47; -fx-highlight-text-fill: firebrick; -fx-font-size: 20px;" );
+        Button btn = new Button( "Start" );
+        root.getChildren().add( btn );
+        root.getChildren().add( text );
+        text.selectRange( 4, 5 );
 //        text.setEditable(false);
 //        text.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 //            @Override public void handle(MouseEvent t) { t.consume(); }
 //        });
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String str=text.getText();
+                String str = text.getText();
                 //动画线程
-                Task<Void> progressTask = new Task<Void>(){
+                Task<Void> progressTask = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        MyLatex analyze=new MyLatex(str);
+                        Latex analyze = new Latex( str );
                         analyze.LetexAnalyze();
                         analyze.GetAnimatePos();
                         for (int i = 0; i <= analyze.animatePos.size(); i++) {
-                            int tempX=analyze.animatePos.get(i).x;
-                            int tempY=analyze.animatePos.get(i).y;
-                            System.out.println(tempX+"-"+tempY);
-                            text.selectRange(tempX-1,tempY);
+                            int tempX = analyze.animatePos.get( i ).x;
+                            int tempY = analyze.animatePos.get( i ).y;
+                            System.out.println( tempX + "-" + tempY );
+                            text.selectRange( tempX - 1, tempY );
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep( 500 );
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
-                        updateMessage("Finish");
+                        updateMessage( "Finish" );
                         return null;
                     }
                 };
-                new Thread(progressTask).start();
+                new Thread( progressTask ).start();
             }
-        });
+        } );
 
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root,500,500));
+        primaryStage.setTitle( "Hello World" );
+        primaryStage.setScene( new Scene( root, 500, 500 ) );
         primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

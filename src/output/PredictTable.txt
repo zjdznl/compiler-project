@@ -1,0 +1,62 @@
+program#{ -> compoundstmt
+stmt#int -> decl
+stmt#real -> decl
+stmt#if -> ifstmt
+stmt#while -> whilestmt
+stmt#ID -> assgstmt
+stmt#{ -> compoundstmt
+compoundstmt#{ -> { stmts }
+stmts#if -> stmt stmts
+stmts#while -> stmt stmts
+stmts#ID -> stmt stmts
+stmts#{ -> stmt stmts
+stmts#int -> stmt stmts
+stmts#real -> stmt stmts
+stmts#} -> none
+ifstmt#if -> if ( boolexpr ) then stmt else stmt
+whilestmt#while -> while ( boolexpr ) stmt
+assgstmt#ID -> ID = arithexpr ;
+decl#int -> type list ;
+decl#real -> type list ;
+type#int -> int
+type#real -> real
+list#ID -> ID list1
+list1#, -> , list
+list1#; -> none
+boolexpr#ID -> arithexpr boolop arithexpr
+boolexpr#NUM -> arithexpr boolop arithexpr
+boolexpr#( -> arithexpr boolop arithexpr
+boolop#< -> <
+boolop#> -> >
+boolop#<= -> <=
+boolop#>= -> >=
+boolop#== -> ==
+arithexpr#ID -> multexpr arithexprprime
+arithexpr#NUM -> multexpr arithexprprime
+arithexpr#( -> multexpr arithexprprime
+arithexprprime#+ -> + multexpr arithexprprime
+arithexprprime#- -> - multexpr arithexprprime
+arithexprprime#; -> none
+arithexprprime#< -> none
+arithexprprime#> -> none
+arithexprprime#<= -> none
+arithexprprime#>= -> none
+arithexprprime#== -> none
+arithexprprime#) -> none
+multexpr#ID -> simpleexpr multexprprime
+multexpr#NUM -> simpleexpr multexprprime
+multexpr#( -> simpleexpr multexprprime
+multexprprime#* -> * simpleexpr multexprprime
+multexprprime#/ -> / simpleexpr multexprprime
+multexprprime#+ -> none
+multexprprime#- -> none
+multexprprime#; -> none
+multexprprime#< -> none
+multexprprime#> -> none
+multexprprime#<= -> none
+multexprprime#>= -> none
+multexprprime#== -> none
+multexprprime#) -> none
+simpleexpr#ID -> ID
+simpleexpr#NUM -> NUM
+simpleexpr#( -> ( arithexpr )
