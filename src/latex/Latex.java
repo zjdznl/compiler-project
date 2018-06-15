@@ -159,7 +159,7 @@ public class Latex {
                         }
                         //错误发现(非终结状态退出或当前字符不是运算符和边界符的符号)
                         if (state == 2 || state == 4 || state == 5 || state == 6) hasError = true;
-                        if (!IsNumble( ch ) && (!IsOpOrDeli( ch ) || ch == '.')) hasError = true;
+                        if (!IsNumble( ch ) && (!IsOpOrDeli( ch ) || ch == '.')&&ch!=' ') hasError = true;
                         //错误处理
                         if (hasError) {
                             //处理到可以截断的字符

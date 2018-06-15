@@ -195,17 +195,17 @@ public class Parser {
                 }
 
                 //todo 笨方法
-                List<String> absenceList = Arrays.asList( ";", "else", "then", "else" );
+                List<String> absenceList = Arrays.asList( ";", "else", "then" );
 
 
                 //todo tokenList.get( 0 ) or preToken
                 if (absenceList.contains( stack.peek() ) ) {
                     String absenceString = stack.peek();
                     LOGGER.info( String.format( "Error, 缺少 %s 符号。    " + "\n", absenceString));
-                    Error error = new Error( String.format( "Error, 缺少 %s 符号。", absenceString), tokenList.get( 0 ) );
+                    Error error = new Error( String.format( "缺少 %s 符号。", absenceString), tokenList.get( 0 ) );
                     errorList.add( error );
 
-                    //todo 这里应该向 tokenList增加一个 else token
+                    //todo 这里应该向 tokenList增加一个 token
                     tokenList.add( 0, new Token( absenceString, Keyword, tokenList.get( 0 ).getTokenLine(), tokenList.get( 0 ).getTokenLine() ) );
 //                    stack.pop();
 
@@ -214,6 +214,18 @@ public class Parser {
 //                        leftandinput = stack.peek() + "-" + tokenList.get( 0 ).getTokenDetailType();
 //                    }
                     continue;
+                }
+
+                //确保丢失的分号可以被发现
+                if (stack.size() > 0) {
+                    String tokenValue = tokenList.get( 0 ).getTokenValue();
+                    if (stack.peek().equals( "arithexprprime" ) && !(tokenValue.equals( "+" ) || tokenValue.equals( "+" ))) {
+                        stack.pop();
+                        continue;
+                    } else if (stack.peek().equals( "multexprprime" ) && !(tokenValue.equals( "*" ) || tokenValue.equals( "/" ))) {
+                        stack.pop();
+                        continue;
+                    }
                 }
 
 //                if (stack.peek().equals( ";" )) {
@@ -251,7 +263,7 @@ public class Parser {
 //                LOGGER.info( "Error, 不存在该表项, 恐慌模式将删除该token：    " + leftandinput + "  ,token info: " + tokenList.get( 0 ) + "\n" );
 //                Error error = new Error( "Error, 不存在该表项, 恐慌模式将删除该token", tokenList.get( 0 ) );
                 LOGGER.info( "Error,多余 token：    " + leftandinput + "  ,token info: " + tokenList.get( 0 ) + "\n" );
-                Error error = new Error( "Error, 多余 token", tokenList.get( 0 ) );
+                Error error = new Error( "多余 token", tokenList.get( 0 ) );
                 errorList.add( error );
                 //恐慌模式
                 preToken = tokenList.remove( 0 );

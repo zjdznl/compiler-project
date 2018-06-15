@@ -26,9 +26,11 @@ public class Config {
             "mult=1; \n" +
             "while (i>0) {n=n+1;i=i-1;;} \n" +
             "if (j>=50) then sum=sum+j; else {mult=mult*(j+1);sum=sum+i;} \n" +
-            "if (i<=10) then sum=sum-i; else mult=mult+i/2;n=123; \n" +
-            "if (i==j) then sum=sum-j; else mult=mult-j/2; \n" +
-            "if (n>1) then n=n-1;else n=n+1; \n" +
-            "if (n<2) then  n=n+2; else n=n--2; \n" +
+            "if (i<=10) then sum=sum-i; else mult=mult+i/2;n \n" +
+            "if (i==j) then sum=sum-j; else mult=mult-j/2;n=123 \n" +
+            "if (n>1)  n=n-1;else n=n+1 \n" +
+            "if (n<2) then  n=n+2;  n=n--2; \n" +
             "}";
+
+
 }

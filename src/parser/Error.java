@@ -60,7 +60,7 @@ public class Error {
     @Override
     public String toString() {
         return "Error{" +
-                ", info='" + info + '\'' +
+                "info='" + info + '\'' +
                 ", line=" + line +
                 ", row=" + row +
                 ", token=" + token +
