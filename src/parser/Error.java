@@ -3,7 +3,6 @@ package parser;
 import token.Token;
 
 public class Error {
-    private int id;
     private String info;//错误信息
     private int line;//行号
     private int row;
@@ -23,23 +22,6 @@ public class Error {
         this.token = token;
         this.line = token.getTokenLine();
         this.row = token.getTokenPos();
-    }
-
-
-    public Error(int id, String info, Token token) {
-        this.id = id;
-        this.info = info;
-        this.token = token;
-        this.line = token.getTokenLine();
-        this.row = token.getTokenPos();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getInfo() {
@@ -78,7 +60,6 @@ public class Error {
     @Override
     public String toString() {
         return "Error{" +
-                "id=" + id +
                 ", info='" + info + '\'' +
                 ", line=" + line +
                 ", row=" + row +

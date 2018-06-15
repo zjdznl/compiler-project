@@ -14,6 +14,8 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import static token.TokenType.Keyword;
+
 public class Parser {
     //预测分析表
     private HashMap<String, String> predictMap;
@@ -31,6 +33,9 @@ public class Parser {
     static Handler fileHandler = null;
     private static final Logger LOGGER = Logger.getLogger( Test.class
             .getClass().getName() );
+
+    //当前 token 的上一个
+    private Token preToken;
 
     public static void loggerInit() {
 
@@ -114,7 +119,7 @@ public class Parser {
         while (stack.size() > 0 && tokenList.size() > 0) {
 
             if (tokenList.get( 0 ).getTokenDetailType().equals( "Comment" )) {
-                tokenList.remove( 0 );
+                preToken = tokenList.remove( 0 );
                 continue;
             }
             //输入缓冲区与推导符号串第一个字符相等的话，删掉
@@ -124,7 +129,7 @@ public class Parser {
                     LOGGER.info( String.format( "栈顶值和token值相等，消！the value is %s \n", stack.peek() ) );
 
                     //移除相同值
-                    tokenList.remove( 0 );
+                    preToken = tokenList.remove( 0 );
                     stack.pop();
                     continue;
                 }
@@ -153,7 +158,7 @@ public class Parser {
 //                stack.remove( stack.size() - 1 );
                 stack.pop();
                 //todo
-                if (right.equals( "$" )) {
+                if (right.equals( "none" )) {
                     //只弹不压
                 }
                 //压入后序字符
@@ -170,23 +175,90 @@ public class Parser {
             }
             //否则的话报错
             else {
-                LOGGER.info( "Error, 不存在该表项：    " + leftandinput + "  ,token info: " + tokenList.get( 0 ) + "\n" );
 
-                Error error = new Error( "不存在该表项", tokenList.get( 0 ) );
+//                tokenList.get( 0 ).getTokenDetailType().equals( stack.peek() );
+//                (right = predictMap.get( leftandinput )) != null
+                if (stack.peek().equals( "=" )) {
+                    LOGGER.info( "Error, 不能单独输入 ID, 请删除 多余的ID 或 补全。    " + "\n" );
+                    Error error = new Error( "单独输入 ID, 请删除 多余的ID 或 补全", preToken );
+                    errorList.add( error );
+                    //todo 可以这样做么
+                    while ((right = predictMap.get( leftandinput )) == null) {
+                        stack.pop();
+                        if (stack.size() > 0) {
+                            leftandinput = stack.peek() + "-" + tokenList.get( 0 ).getTokenDetailType();
+                        } else {
+                            break;
+                        }
+                    }
+                    continue;
+                }
+
+                //todo 笨方法
+                List<String> absenceList = Arrays.asList( ";", "else", "then", "else" );
+
+
+                //todo tokenList.get( 0 ) or preToken
+                if (absenceList.contains( stack.peek() ) ) {
+                    String absenceString = stack.peek();
+                    LOGGER.info( String.format( "Error, 缺少 %s 符号。    " + "\n", absenceString));
+                    Error error = new Error( String.format( "Error, 缺少 %s 符号。", absenceString), tokenList.get( 0 ) );
+                    errorList.add( error );
+
+                    //todo 这里应该向 tokenList增加一个 else token
+                    tokenList.add( 0, new Token( absenceString, Keyword, tokenList.get( 0 ).getTokenLine(), tokenList.get( 0 ).getTokenLine() ) );
+//                    stack.pop();
+
+//                    while ((right = predictMap.get( leftandinput )) == null) {
+//                        stack.pop();
+//                        leftandinput = stack.peek() + "-" + tokenList.get( 0 ).getTokenDetailType();
+//                    }
+                    continue;
+                }
+
+//                if (stack.peek().equals( ";" )) {
+//                    LOGGER.info( "Error, 缺少 ; 符号, 请删除语句 或 补全 ;。    " + "\n" );
+//                    Error error = new Error( "缺少 ; 符号, 请删除语句 或 补全 ;。", preToken );
+//                    errorList.add( error );
+//
+//                    //todo 这里应该可以pop ,因为 ; 已经是结束了
+//                    stack.pop();
+////                    while ((right = predictMap.get( leftandinput )) == null) {
+////                        stack.pop();
+////                        leftandinput = stack.peek() + "-" + tokenList.get( 0 ).getTokenDetailType();
+////                    }
+//                    continue;
+//                }
+//
+//                //todo tokenList.get( 0 ) or preToken
+//                if (stack.peek().equals( "else" )) {
+//                    LOGGER.info( "Error, 缺少 else 符号。    " + "\n" );
+//                    Error error = new Error( "Error, 缺少 else 符号。", tokenList.get( 0 ) );
+//                    errorList.add( error );
+//
+//                    //todo 这里应该向 tokenList增加一个 else token
+//                    tokenList.add( 0, new Token( "else", Keyword, tokenList.get( 0 ).getTokenLine(), tokenList.get( 0 ).getTokenLine() ) );
+////                    stack.pop();
+//
+////                    while ((right = predictMap.get( leftandinput )) == null) {
+////                        stack.pop();
+////                        leftandinput = stack.peek() + "-" + tokenList.get( 0 ).getTokenDetailType();
+////                    }
+//                    continue;
+//                }
+
+
+//                LOGGER.info( "Error, 不存在该表项, 恐慌模式将删除该token：    " + leftandinput + "  ,token info: " + tokenList.get( 0 ) + "\n" );
+//                Error error = new Error( "Error, 不存在该表项, 恐慌模式将删除该token", tokenList.get( 0 ) );
+                LOGGER.info( "Error,多余 token：    " + leftandinput + "  ,token info: " + tokenList.get( 0 ) + "\n" );
+                Error error = new Error( "Error, 多余 token", tokenList.get( 0 ) );
                 errorList.add( error );
-
-                //重新书写process
-//                process = new StringBuilder();
-////                for (int i = stack.size() - 1; i > -1; i--) {
-////                    process.append( stack.get( i ) ).append( " " );
-////                }
-////                //tbmodel_lex_result.addRow(new String[]{process, "ERROR!  无法识别的字符"+input_cache.get(0)+"产生式"+leftandinput});
-////                DefaultTableModel tableModel = (DefaultTableModel) jtable2.getModel();
-////                tableModel.addRow( new Object[]{"无法识别的字符:" + inputSequence.get( 0 ), "产生式:" + leftandinput} );
-////                jtable4.invalidate();
-                tokenList.remove( 0 );
+                //恐慌模式
+                preToken = tokenList.remove( 0 );
                 //todo 调试方便，直接break
 //                break;
+
+
             }
         }
     }
