@@ -27,6 +27,10 @@ public class Test {
         }
 
         parser.startParsing();
+
+        for (Error error : parser.getErrorList()) {
+            System.out.println(error);
+        }
     }
 
     public static void testStack() {

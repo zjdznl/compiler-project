@@ -8,10 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
@@ -21,10 +18,14 @@ public class Parser {
     //预测分析表
     private HashMap<String, String> predictMap;
     //输入字串
-    private String tokenList;
+    private String inputSequence;
     //下推栈
 //    private Stack<String> stack;
     private Stack<String> stack;
+
+    //分别对应
+    private List<Error> errorList = new ArrayList<>();
+    private int errorCount = 0;
 
     //用于打印日志的------
     static Handler fileHandler = null;
@@ -53,14 +54,14 @@ public class Parser {
      */
     /// end of logging -----
 
-    public Parser(String tokenList) {
-        this.tokenList = tokenList;
+    public Parser(String inputSequence) {
+        this.inputSequence = inputSequence;
         this.stack = new Stack<>();
         genPredictMap();
     }
 
     public Parser() {
-        this.tokenList = Config.DEFAULT_CODE;
+        this.inputSequence = Config.ERROR_CODE;
         this.stack = new Stack<>();
         genPredictMap();
     }
@@ -85,7 +86,7 @@ public class Parser {
         StringBuilder stringBuilder = new StringBuilder();
         List stackList = Arrays.asList( stack.toArray() );
 
-        for (int i = 0; i < stackList.size() ; i++) {
+        for (int i = 0; i < stackList.size(); i++) {
             stringBuilder.append( stackList.get( i ) ).append( " " );
         }
 
@@ -98,7 +99,7 @@ public class Parser {
         loggerInit();
 
         //获取 token list
-        Latex latex = new Latex( tokenList );
+        Latex latex = new Latex( inputSequence );
         latex.LetexAnalyze();
         List<Token> tokenList = latex.getTokenList();
         printTokenList( tokenList );
@@ -120,7 +121,7 @@ public class Parser {
             try {
                 if (tokenList.get( 0 ).getTokenDetailType().equals( stack.peek() )) {
                     LOGGER.info( String.format( "stack is:   %s,   token list is:  %s ", getStackString( stack ), getTokenListString( tokenList ) ) );
-                    LOGGER.info( String.format( "栈顶值和token值相等，消！the value is %s \n", stack.peek())  );
+                    LOGGER.info( String.format( "栈顶值和token值相等，消！the value is %s \n", stack.peek() ) );
 
                     //移除相同值
                     tokenList.remove( 0 );
@@ -133,13 +134,11 @@ public class Parser {
 
             //匹配字符
             leftandinput = stack.peek() + "-" + tokenList.get( 0 ).getTokenDetailType();
-            System.out.println( String.format( "下推栈顶和token值不相等,开始匹配并替换非终结符！要查的表项为：[%s, %s] ", stack.peek(),tokenList.get( 0 ).getTokenDetailType() ));
+            LOGGER.info( String.format( "下推栈顶和token值不相等,开始匹配并替换非终结符！要查的表项为：[%s, %s] ", stack.peek(), tokenList.get( 0 ).getTokenDetailType() ) );
             //在预测表中有结果
             if ((right = predictMap.get( leftandinput )) != null) {
-
-                System.out.println( "表命中了！使用产生式：    " + stack.peek() + " -> " + right );
                 LOGGER.info( String.format( "表命中了！替换之前， stack is: %s,token list is: %s  ", getStackString( stack ), getTokenListString( tokenList ) ) );
-                LOGGER.info( "表命中了！使用产生式：    " + stack.peek() + " -> " + right);
+                LOGGER.info( "表命中了！使用产生式：    " + stack.peek() + " -> " + right );
 
                 //输出产生式和推导过程
 //                process = new StringBuilder();
@@ -171,8 +170,10 @@ public class Parser {
             }
             //否则的话报错
             else {
-                System.out.println( "fuck!表没有命中,溜了溜了。" + tokenList.get( 0 ) );
+                LOGGER.info( "Error, 不存在该表项：    " + leftandinput + "  ,token info: " + tokenList.get( 0 ) + "\n" );
 
+                Error error = new Error( "不存在该表项", tokenList.get( 0 ) );
+                errorList.add( error );
 
                 //重新书写process
 //                process = new StringBuilder();
@@ -181,11 +182,11 @@ public class Parser {
 ////                }
 ////                //tbmodel_lex_result.addRow(new String[]{process, "ERROR!  无法识别的字符"+input_cache.get(0)+"产生式"+leftandinput});
 ////                DefaultTableModel tableModel = (DefaultTableModel) jtable2.getModel();
-////                tableModel.addRow( new Object[]{"无法识别的字符:" + tokenList.get( 0 ), "产生式:" + leftandinput} );
+////                tableModel.addRow( new Object[]{"无法识别的字符:" + inputSequence.get( 0 ), "产生式:" + leftandinput} );
 ////                jtable4.invalidate();
                 tokenList.remove( 0 );
                 //todo 调试方便，直接break
-                break;
+//                break;
             }
         }
     }
@@ -226,13 +227,6 @@ public class Parser {
         this.predictMap = predictMap;
     }
 
-    public String getInputSequence() {
-        return tokenList;
-    }
-
-    public void setInputSequence(String tokenList) {
-        this.tokenList = tokenList;
-    }
 
     public Stack<String> getStack() {
         return stack;
@@ -240,5 +234,21 @@ public class Parser {
 
     public void setStack(Stack<String> stack) {
         this.stack = stack;
+    }
+
+    public String getInputSequence() {
+        return inputSequence;
+    }
+
+    public void setInputSequence(String inputSequence) {
+        this.inputSequence = inputSequence;
+    }
+
+    public List<Error> getErrorList() {
+        return errorList;
+    }
+
+    public void setErrorList(List<Error> errorList) {
+        this.errorList = errorList;
     }
 }
