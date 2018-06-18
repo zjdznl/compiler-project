@@ -27,7 +27,7 @@ public class Parser {
 //    private Stack<String> stack;
     private Stack<String> stack;
 
-    //分别对应
+    //错误信息和推导过程
     private List<Error> errorList = new ArrayList<>();
     private List<String[]> derivationProcess = new ArrayList<>(  );
 
