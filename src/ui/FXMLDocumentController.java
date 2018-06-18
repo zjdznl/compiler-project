@@ -8,16 +8,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import latex.Latex;
+import parser.Derivation;
 import parser.Error;
 import parser.Parser;
 import token.Token;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,13 +41,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button zhixing;
     @FXML
-    private Button fenxixiayige;
-    @FXML
-    private Button fenxizhijieshu;
-    @FXML
     private Button qingkong;
-    @FXML
-    private Button chongxinfenxi;
     @FXML
     private TitledPane yuanwenjian;
     @FXML
@@ -80,15 +77,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<?, ?> pos;
     @FXML
-    private TableColumn<?, ?> fuhaobiaobiao;
-    @FXML
     private TableView<?> fuhaobiao;
     @FXML
     private Button jiazai;
-    @FXML
-    private Button zhizuo;
-    @FXML
-    private Button chengyuan;
     @FXML
     private TableView<?> cifabiao;
     @FXML
@@ -97,6 +88,12 @@ public class FXMLDocumentController implements Initializable {
     private TableView<?> sandizhibiao;
     @FXML
     private TableView<?> cuowubiao;
+    @FXML
+    private TableColumn<?, ?> fuhaobiaobiao;
+    @FXML
+    private TitledPane yufashu;
+    @FXML
+    private AnchorPane yufashuneirong;
 
     private void handleButtonAction(ActionEvent event) {
         //
@@ -115,11 +112,11 @@ public class FXMLDocumentController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(mainStage);
 
-        String fileInner = null;
+        String fileInner = "";
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(selectedFile));
-            String tempString = null;
+            String tempString = "";
             while ((tempString = reader.readLine()) != null) {
                 fileInner += tempString + "\n";
             }
@@ -190,8 +187,6 @@ public class FXMLDocumentController implements Initializable {
                 Latex analyze = new Latex(str);
                 analyze.LetexAnalyze();
                 analyze.GetAnimatePos();
-                Parser parser = new Parser(str);
-                parser.startParsing();
 
                 //语法
                 //List<Error> errorList = parser.getErrorList();
@@ -206,25 +201,34 @@ public class FXMLDocumentController implements Initializable {
                 ((TableColumn<Error, String>) cuowuliehao).setCellValueFactory(new PropertyValueFactory<Error, String>("row"));
                 ((TableColumn<Error, String>) cuowuxinxi).setCellValueFactory(new PropertyValueFactory<Error, String>("info"));
 
+                ((TableColumn<Derivation, String>) shiyong).setCellValueFactory(new PropertyValueFactory<Derivation, String>("production"));
+                ((TableColumn<Derivation, String>) tuidao).setCellValueFactory(new PropertyValueFactory<Derivation, String>("process"));
+
                 TableView<Token> call_cifaibiao = (TableView<Token>) cifabiao;
                 TableView<Error> call_cuowubiao = (TableView<Error>) cuowubiao;
+                TableView<Derivation> call_yufabiao = (TableView<Derivation>) yufabiao;
 
-                for (int i = 0; i <= analyze.animatePos.size(); i++) {
+
+                Parser parser = new Parser(str);
+                parser.startParsing();
+
+
+                for (int i = 0; i < analyze.animatePos.size(); i++) {
                     int tempX = analyze.animatePos.get(i).x;
                     int tempY = analyze.animatePos.get(i).y;
                     yuanwenjianneirong.selectRange(tempX - 1, tempY);
 
                     //derivationProcess.get(i)[0];
                     //derivationProcess.get(i)[1];
-                    call_cifaibiao.setItems(FXCollections.observableArrayList(analyze.tokenList.subList(0,i)));
-                    call_cuowubiao.setItems(FXCollections.observableArrayList(parser.getErrorList().subList(0,i)));
-
+                    call_cifaibiao.setItems(FXCollections.observableArrayList(analyze.tokenList.subList(0, i)));
+                    call_yufabiao.setItems(FXCollections.observableArrayList(parser.getDerivationProcess().subList(0, i)));
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+                call_cuowubiao.setItems(FXCollections.observableArrayList(parser.getErrorList()));
                 updateMessage("Finish");
                 return null;
             }
@@ -234,27 +238,19 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void fenxixiayigefun(ActionEvent event) {
-    }
-
-    @FXML
-    private void fenxizhijieshufun(ActionEvent event) {
-    }
-
-    @FXML
     private void qingkongfenxijieguo(ActionEvent event) {
-    }
 
-    @FXML
-    private void chongxinfenxifun(ActionEvent event) {
-    }
+        Latex analyze = new Latex();
+        Parser parser = new Parser();
 
-    @FXML
-    private void zhizuozhemingdan(ActionEvent event) {
-    }
+        TableView<Token> call_cifaibiao = (TableView<Token>) cifabiao;
+        TableView<Error> call_cuowubiao = (TableView<Error>) cuowubiao;
+        TableView<Derivation> call_yufabiao = (TableView<Derivation>) yufabiao;
 
-    @FXML
-    private void chengyuanfengong(ActionEvent event) {
+        call_cifaibiao.setItems(FXCollections.observableArrayList(analyze.tokenList));
+        call_yufabiao.setItems(FXCollections.observableArrayList(parser.getDerivationProcess()));
+        call_cuowubiao.setItems(FXCollections.observableArrayList(parser.getErrorList()));
+
     }
 
 }
