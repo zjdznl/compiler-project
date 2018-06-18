@@ -1,19 +1,7 @@
 package ui;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,11 +9,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.concurrent.Task;
 import latex.Latex;
 import parser.Error;
 import parser.Parser;
 import token.Token;
+
+import java.io.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Title:  FXMLDocumentController
@@ -86,13 +77,23 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<?, ?> pos;
     @FXML
-    private TableColumn<?, ?> fuhaobiao;
+    private TableColumn<?, ?> fuhaobiaobiao;
+    @FXML
+    private TableView<?> fuhaobiao;
     @FXML
     private Button jiazai;
     @FXML
     private Button zhizuo;
     @FXML
     private Button chengyuan;
+    @FXML
+    private TableView<?> cifabiao;
+    @FXML
+    private TableView<?> yufabiao;
+    @FXML
+    private TableView<?> sandizhibiao;
+    @FXML
+    private TableView<?> cuowubiao;
 
     private void handleButtonAction(ActionEvent event) {
         //
@@ -100,7 +101,8 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
+
     }
 
     @FXML
@@ -175,7 +177,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void zhixingdangqianyuanwenjian(ActionEvent event) {
-
         final String str = yuanwenjianneirong.getText();
         yuanwenjianneirong.setStyle("-fx-highlight-fill: #d3ca47; -fx-highlight-text-fill: firebrick;");
         //动画线程
@@ -183,44 +184,38 @@ public class FXMLDocumentController implements Initializable {
             @Override
             protected Void call() throws Exception {
 
-                TableView<String> table = new TableView<>();
-
                 Latex analyze = new Latex(str);
                 analyze.LetexAnalyze();
                 analyze.GetAnimatePos();
-
-                Parser parser = new Parser();
-                parser.genPredictMap();
+                Parser parser = new Parser(str);
                 parser.startParsing();
 
-
-                //词法
-                List<Token> tokenList = analyze.tokenList;
                 //语法
-                List<Error> errorList = parser.getErrorList();
-                List<String[]> derivationProcess = parser.getDerivationProcess();
+                //List<Error> errorList = parser.getErrorList();
+                //List<String[]> derivationProcess = parser.getDerivationProcess();
+
+                ((TableColumn<Token, String>) cifahanghao).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenLine"));
+                ((TableColumn<Token, String>) cifaliehao).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenPos"));
+                ((TableColumn<Token, String>) token).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenValue"));
+                ((TableColumn<Token, String>) leibie).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenType"));
+
+                ((TableColumn<Error, String>) cuowuhanghao).setCellValueFactory(new PropertyValueFactory<Error, String>("line"));
+                ((TableColumn<Error, String>) cuowuliehao).setCellValueFactory(new PropertyValueFactory<Error, String>("row"));
+                ((TableColumn<Error, String>) cuowuxinxi).setCellValueFactory(new PropertyValueFactory<Error, String>("info"));
+
+                TableView<Token> call_cifaibiao = (TableView<Token>) cifabiao;
+                TableView<Error> call_cuowubiao = (TableView<Error>) cuowubiao;
+
 
                 for (int i = 0; i <= analyze.animatePos.size(); i++) {
                     int tempX = analyze.animatePos.get(i).x;
                     int tempY = analyze.animatePos.get(i).y;
                     yuanwenjianneirong.selectRange(tempX - 1, tempY);
 
-                    tokenList.get(i).getTokenLine();
-                    tokenList.get(i).getTokenPos();
-                    tokenList.get(i).getTokenName();
-                    tokenList.get(i).getTokenType();
-
-                    ObservableList<String> data = FXCollections.observableArrayList(tokenList.get(i).getTokenLine() + "");
-
-                    errorList.get(i).getInfo();
-                    errorList.get(i).getLine();
-                    errorList.get(i).getRow();
-
-                    table.setItems(data);
-                    table.getColumns().add((TableColumn<String, ?>) cifahanghao);
-
                     //derivationProcess.get(i)[0];
                     //derivationProcess.get(i)[1];
+                    call_cifaibiao.setItems(FXCollections.observableArrayList(analyze.tokenList.subList(0,i)));
+                    call_cuowubiao.setItems(FXCollections.observableArrayList(parser.getErrorList().subList(0,i)));
 
                     try {
                         Thread.sleep(500);
@@ -228,11 +223,17 @@ public class FXMLDocumentController implements Initializable {
                         e.printStackTrace();
                     }
                 }
+
+
                 updateMessage("Finish");
                 return null;
             }
         };
-        new Thread(progressTask).start();
+        new
+
+                Thread(progressTask).
+
+                start();
 
     }
 
