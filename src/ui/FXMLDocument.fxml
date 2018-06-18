@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="794.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.FXMLDocumentController">
+    <children>
+        <Button fx:id="baocun" alignment="CENTER" graphicTextGap="0.0" layoutX="200.0" layoutY="67.0" mnemonicParsing="false" onAction="#baocunyuanwenjian" prefHeight="31.0" prefWidth="131.0" text="保存源文件" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Label layoutX="360.0" layoutY="14.0" text="编译原理">
+            <font>
+                <Font size="30.0" />
+            </font>
+        </Label>
+        <Button fx:id="zhixing" alignment="CENTER" graphicTextGap="0.0" layoutX="501.0" layoutY="67.0" mnemonicParsing="false" onAction="#zhixingdangqianyuanwenjian" prefHeight="76.0" prefWidth="168.0" text="执行当前源文件" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="fenxixiayige" alignment="CENTER" graphicTextGap="0.0" layoutX="60.0" layoutY="113.0" mnemonicParsing="false" onAction="#fenxixiayigefun" prefHeight="31.0" prefWidth="125.0" text="分析下一个" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="fenxizhijieshu" alignment="CENTER" graphicTextGap="0.0" layoutX="201.0" layoutY="113.0" mnemonicParsing="false" onAction="#fenxizhijieshufun" prefHeight="31.0" prefWidth="131.0" text="分析至结束" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="qingkong" alignment="CENTER" graphicTextGap="0.0" layoutX="348.0" layoutY="67.0" mnemonicParsing="false" onAction="#qingkongfenxijieguo" prefHeight="31.0" prefWidth="131.0" text="清空分析结果" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="chongxinfenxi" alignment="CENTER" graphicTextGap="0.0" layoutX="348.0" layoutY="113.0" mnemonicParsing="false" onAction="#chongxinfenxifun" prefHeight="31.0" prefWidth="131.0" text="重新分析" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Line endX="100.0" layoutX="571.0" layoutY="54.0" startX="-400.0" />
+        <TitledPane fx:id="yuanwenjian" animated="false" layoutX="26.0" layoutY="173.0" prefHeight="473.0" prefWidth="328.0" text="源文件">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="435.0" prefWidth="326.0">
+                    <children>
+                        <TextArea fx:id="yuanwenjianneirong" layoutX="-1.0" layoutY="-2.0" prefHeight="448.0" prefWidth="328.0" />
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="cifa" animated="false" layoutX="379.0" layoutY="173.0" prefHeight="148.0" prefWidth="444.0" text="词法分析结果">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
+                            <columns>
+                                <TableColumn fx:id="cifahanghao" prefWidth="75.0" text="行号" />
+                                <TableColumn fx:id="cifaliehao" prefWidth="75.0" text="列号" />
+                                <TableColumn fx:id="token" prefWidth="144.0" text="Token" />
+                                <TableColumn fx:id="leibie" prefWidth="149.0" text="类别" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="yufa" animated="false" layoutX="379.0" layoutY="335.0" prefHeight="148.0" prefWidth="444.0" text="语法分析结果">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
+                            <columns>
+                                <TableColumn fx:id="shiyong" prefWidth="190.0" text="使用的产生式" />
+                                <TableColumn fx:id="tuidao" prefWidth="253.0" text="推导过程" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane animated="false" layoutX="379.0" layoutY="498.0" prefHeight="148.0" prefWidth="444.0" text="三地址代码">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
+                            <columns>
+                                <TableColumn fx:id="daima" prefWidth="443.0" text="代码信息" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="cuowu" animated="false" layoutX="25.0" layoutY="664.0" prefHeight="102.0" prefWidth="390.0" text="错误">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="76.0" prefWidth="390.0">
+                            <columns>
+                                <TableColumn fx:id="cuowuhanghao" prefWidth="75.0" text="行号" />
+                                <TableColumn fx:id="cuowuliehao" prefWidth="75.0" text="列号" />
+                                <TableColumn fx:id="cuowuxinxi" prefWidth="239.0" text="错误信息" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="fuhao" animated="false" layoutX="434.0" layoutY="664.0" prefHeight="102.0" prefWidth="390.0" text="符号表">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="76.0" prefWidth="390.0">
+                            <columns>
+                                <TableColumn fx:id="pos" prefWidth="111.0" text="POS" />
+                                <TableColumn fx:id="fuhaobiao" prefWidth="278.0" text="符号表" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <Button fx:id="jiazai" alignment="CENTER" graphicTextGap="0.0" layoutX="60.0" layoutY="67.0" mnemonicParsing="false" onAction="#jiazaiwenjian" prefHeight="31.0" prefWidth="125.0" text="加载文件" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Line endX="100.0" layoutX="571.0" layoutY="158.0" startX="-400.0" />
+        <Button fx:id="zhizuo" alignment="CENTER" graphicTextGap="0.0" layoutX="686.0" layoutY="113.0" mnemonicParsing="false" onAction="#zhizuozhemingdan" prefHeight="31.0" prefWidth="131.0" text="制作者名单" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="chengyuan" alignment="CENTER" graphicTextGap="0.0" layoutX="686.0" layoutY="67.0" mnemonicParsing="false" onAction="#chengyuanfengong" prefHeight="31.0" prefWidth="131.0" text="成员分工" textAlignment="CENTER">
+            <font>
+                <Font name="Helvetica" size="15.0" />
+            </font>
+        </Button>
+    </children>
+</Pane>
