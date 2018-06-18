@@ -21,7 +21,7 @@ public class Test {
     }
 
     public static void testParser() {
-        Parser parser = new Parser(Config.DEFAULT_CODE);
+        Parser parser = new Parser( Config.DEFAULT_CODE );
         parser.genPredictMap();
 
         for (Map.Entry<String, String> entry : parser.getPredictMap().entrySet()) {
@@ -31,7 +31,11 @@ public class Test {
         parser.startParsing();
 
         for (Error error : parser.getErrorList()) {
-            System.out.println(error);
+            System.out.println( error );
+        }
+
+        for (String[] strings : parser.getDerivationProcess()) {
+            System.out.println( String.format( "使用的产生式: %s, 对应的推导过程: %s", strings[0], strings[1] ) );
         }
     }
 
@@ -42,17 +46,17 @@ public class Test {
         stack.push( "c" );
 
 //        System.out.println( stack.peek() );
-        System.out.println( Arrays.toString(stack.toArray()) );
-        System.out.println( stack.toString().replaceAll("\\[", "").replaceAll("]", ""));
+        System.out.println( Arrays.toString( stack.toArray() ) );
+        System.out.println( stack.toString().replaceAll( "\\[", "" ).replaceAll( "]", "" ) );
         printStack( stack );
-        System.out.println(getStackString( stack ));
+        System.out.println( getStackString( stack ) );
     }
 
     public static void printStack(Stack stack) {
         List list = Arrays.asList( stack.toArray() );
 
         for (int i = list.size() - 1; i >= 0; i--) {
-            System.out.print(list.get( i ) + " ");
+            System.out.print( list.get( i ) + " " );
         }
     }
 

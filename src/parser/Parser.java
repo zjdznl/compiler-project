@@ -29,7 +29,8 @@ public class Parser {
 
     //分别对应
     private List<Error> errorList = new ArrayList<>();
-    private int errorCount = 0;
+    private List<String[]> derivationProcess = new ArrayList<>(  );
+
 
     //用于打印日志的------
     static Handler fileHandler = null;
@@ -69,8 +70,7 @@ public class Parser {
     }
 
     public Parser() {
-        this.inputSequence = Config.ERROR_CODE;
-        this.stack = new Stack<>();
+        this.inputSequence = Config.DEFAULT_CODE;
         genPredictMap();
     }
 
@@ -95,6 +95,17 @@ public class Parser {
         List stackList = Arrays.asList( stack.toArray() );
 
         for (int i = 0; i < stackList.size(); i++) {
+            stringBuilder.append( stackList.get( i ) ).append( " " );
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static String getStackStringBottomUp(Stack stack) {
+        StringBuilder stringBuilder = new StringBuilder();
+        List stackList = Arrays.asList( stack.toArray() );
+
+        for (int i = stackList.size() - 1; i >=0 ; i--) {
             stringBuilder.append( stackList.get( i ) ).append( " " );
         }
 
@@ -138,9 +149,12 @@ public class Parser {
                         isRoot=true;
                     }
 
+                    String usedProduction = "消去终结符: " + stack.peek();
                     //移除相同值
                     preToken = tokenList.remove( 0 );
                     stack.pop();
+                    String stackAfterReplace = getStackStringBottomUp( stack );
+                    this.derivationProcess.add( new String[]{usedProduction, stackAfterReplace} );
                     continue;
                 }
             } catch (Exception e) {
@@ -153,7 +167,10 @@ public class Parser {
             //在预测表中有结果
             if ((right = predictMap.get( leftandinput )) != null) {
                 LOGGER.info( String.format( "表命中了！替换之前， stack is: %s,token list is: %s  ", getStackString( stack ), getTokenListString( tokenList ) ) );
-                LOGGER.info( "表命中了！使用产生式：    " + stack.peek() + " -> " + right );
+                //命中后使用的产生式
+                String usedProduction = stack.peek() + " -> " + right;
+                LOGGER.info( "表命中了！使用产生式：    " + usedProduction );
+
                 //构建语法树
                 int pos=Util.getIndexByProductionString(stack.peek() + " -> " + right);
                 parserTree.BuildParserTree(tokenList.get(0),pos,isRoot);
@@ -184,6 +201,9 @@ public class Parser {
                         }
                     }
                 }
+
+                String stackAfterReplace = getStackStringBottomUp( stack );
+                this.derivationProcess.add( new String[]{usedProduction, stackAfterReplace} );
                 LOGGER.info( String.format( "表命中了！替换之后， stack is: %s,token list is: %s  \n", getStackString( stack ), getTokenListString( tokenList ) ) );
             }
             //否则的话报错
@@ -286,6 +306,7 @@ public class Parser {
 
             }
         }
+        //todo 分析某部分还有剩余情况的问题
     }
 
     public void genPredictMap() {
@@ -347,5 +368,9 @@ public class Parser {
 
     public void setErrorList(List<Error> errorList) {
         this.errorList = errorList;
+    }
+
+    public List<String[]> getDerivationProcess() {
+        return derivationProcess;
     }
 }
