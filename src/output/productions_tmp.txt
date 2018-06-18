@@ -1,0 +1,35 @@
+0 : program -> compoundstmt
+1 : stmt -> ifstmt
+2 : stmt -> whilestmt
+3 : stmt -> assgstmt
+4 : stmt -> compoundstmt
+5 : compoundstmt -> { stmts }
+6 : stmts -> stmt stmts
+7 : stmts -> none
+8 : ifstmt -> if ( boolexpr ) then stmt else stmt
+9 : whilestmt -> while ( boolexpr ) stmt
+10 : assgstmt -> ID = arithexpr ;
+11 : boolexpr -> arithexpr boolop arithexpr
+12 : boolop -> <
+13 : boolop -> >
+14 : boolop -> <=
+15 : boolop -> >=
+16 : boolop -> ==
+17 : arithexpr -> multexpr arithexprprime
+18 : arithexprprime -> + multexpr arithexprprime
+19 : arithexprprime -> - multexpr arithexprprime
+20 : arithexprprime -> none
+21 : multexpr -> simpleexpr multexprprime
+22 : multexprprime -> * simpleexpr multexprprime
+23 : multexprprime -> / simpleexpr multexprprime
+24 : multexprprime -> none
+25 : simpleexpr -> ID
+26 : simpleexpr -> NUM
+27 : simpleexpr -> ( arithexpr )
+28 : stmt -> decl
+29 : decl -> type list ;
+30 : type -> int
+31 : type -> real
+32 : list -> ID list1
+33 : list1 -> , list
+34 : list1 -> none

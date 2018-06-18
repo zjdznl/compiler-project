@@ -4,6 +4,7 @@ public class Config {
     public static String GRAMMAR_FILE = "src/grammar.txt";
     public static String PREDICT_TABLE = "src/output/PredictTable.txt";
     public static String PRODUCTIOS_FILE = "src/output/productions.txt";
+    public static String PRODUCTIOS_FILE_TMP = "src/output/productions_tmp.txt";
     public static String DEFAULT_CODE = "{ \n" +
             "i=10; \n" +
             "j=100; \n" +

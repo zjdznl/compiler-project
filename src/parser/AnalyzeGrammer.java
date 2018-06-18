@@ -59,7 +59,7 @@ public class AnalyzeGrammer {
         outputSelect();
         System.out.println();
 
-        outPutProductionsTofile();
+//        outPutProductionsTofile();
     }
 
 
@@ -415,7 +415,7 @@ public class AnalyzeGrammer {
           将产生式输出到文件，每个产生式对应一个序号
          */
         try {
-            File file = new File( Config.ERROR_CODE );
+            File file = new File( Config.PRODUCTIOS_FILE );
             //if file doesn't exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
