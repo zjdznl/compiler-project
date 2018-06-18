@@ -198,7 +198,7 @@ public class FXMLDocumentController implements Initializable {
                 List<Token> tokenList = analyze.tokenList;
                 //语法
                 List<Error> errorList = parser.getErrorList();
-                List<String[]> derivationProcess = parser.getDerivationProcess();
+//                List<String[]> derivationProcess = parser.getDerivationProcess();
 
                 for (int i = 0; i <= analyze.animatePos.size(); i++) {
                     int tempX = analyze.animatePos.get(i).x;

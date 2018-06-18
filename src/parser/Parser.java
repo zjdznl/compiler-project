@@ -28,7 +28,7 @@ public class Parser {
 
     //错误信息和推导过程
     private List<Error> errorList = new ArrayList<>();
-    private List<String[]> derivationProcess = new ArrayList<>();
+    private List<Derivation> derivationProcess = new ArrayList<>();
 
 
     //用于打印日志的------
@@ -98,7 +98,7 @@ public class Parser {
                     preToken = tokenList.remove( 0 );
                     stack.pop();
                     String stackAfterReplace = getStackStringBottomUp( stack );
-                    this.derivationProcess.add( new String[]{usedProduction, stackAfterReplace} );
+                    this.derivationProcess.add( new Derivation( usedProduction, stackAfterReplace ));
                     continue;
                 }
             } catch (Exception e) {
@@ -133,7 +133,7 @@ public class Parser {
                 }
 
                 String stackAfterReplace = getStackStringBottomUp( stack );
-                this.derivationProcess.add( new String[]{usedProduction, stackAfterReplace} );
+                this.derivationProcess.add(new Derivation( usedProduction, stackAfterReplace ));
                 LOGGER.info( String.format( "表命中了！替换之后， stack is: %s,token list is: %s  \n", getStackString( stack ), getTokenListString( tokenList ) ) );
             }
             //否则的话报错
@@ -310,7 +310,12 @@ public class Parser {
         this.errorList = errorList;
     }
 
-    public List<String[]> getDerivationProcess() {
+
+    public List<Derivation> getDerivationProcess() {
         return derivationProcess;
+    }
+
+    public void setDerivationProcess(List<Derivation> derivationProcess) {
+        this.derivationProcess = derivationProcess;
     }
 }
