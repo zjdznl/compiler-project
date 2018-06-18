@@ -32,7 +32,7 @@ public class Latex {
     private String text ;
     //private String text ="int i=3";
     private HashMap<String, Integer> symbolTable = new HashMap<>();
-    private List<Token> tokenList = new ArrayList<>();
+    public List<Token> tokenList = new ArrayList<>();
     private int symbolPos;
 
     public Latex(String str) {

@@ -92,12 +92,12 @@ public class ParserTree {
                 if (isroot) //建立根节点
                 {
                         ParserTree.add(new ParserNode(GrammarForSema[FomularNumber][0], FomularNumber, false, 0));
-                        Level.add(new ArrayList<>());
+                        Level.add(new ArrayList<Integer>());
                         Level.get(0).add(0);
                         Plevel = 0;
                 }
 
-                Level.add(new ArrayList<>());
+                Level.add(new ArrayList<Integer>());
                 //找到根节点并根据传入的产生式建立子树
                 for (int i = 0; i < Level.get(Plevel).size(); i++)//遍历上一次访问的层级
                 {
