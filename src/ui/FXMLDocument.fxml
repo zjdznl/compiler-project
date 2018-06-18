@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.*?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="794.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.FXMLDocumentController">
     <children>
         <Button fx:id="baocun" alignment="CENTER" graphicTextGap="0.0" layoutX="200.0" layoutY="67.0" mnemonicParsing="false" onAction="#baocunyuanwenjian" prefHeight="31.0" prefWidth="131.0" text="保存源文件" textAlignment="CENTER">
@@ -58,7 +55,7 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
+                        <TableView fx:id="cifabiao" layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
                             <columns>
                                 <TableColumn fx:id="cifahanghao" prefWidth="75.0" text="行号" />
                                 <TableColumn fx:id="cifaliehao" prefWidth="75.0" text="列号" />
@@ -74,7 +71,7 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
+                        <TableView fx:id="yufabiao" layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
                             <columns>
                                 <TableColumn fx:id="shiyong" prefWidth="190.0" text="使用的产生式" />
                                 <TableColumn fx:id="tuidao" prefWidth="253.0" text="推导过程" />
@@ -88,7 +85,7 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
+                        <TableView fx:id="sandizhibiao" layoutX="-1.0" layoutY="-1.0" prefHeight="122.0" prefWidth="444.0">
                             <columns>
                                 <TableColumn fx:id="daima" prefWidth="443.0" text="代码信息" />
                             </columns>
@@ -101,7 +98,7 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="76.0" prefWidth="390.0">
+                        <TableView fx:id="cuowubiao" layoutX="-1.0" layoutY="-1.0" prefHeight="76.0" prefWidth="390.0">
                             <columns>
                                 <TableColumn fx:id="cuowuhanghao" prefWidth="75.0" text="行号" />
                                 <TableColumn fx:id="cuowuliehao" prefWidth="75.0" text="列号" />
@@ -116,10 +113,10 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="76.0" prefWidth="390.0">
+                        <TableView fx:id="fuhaobiao" layoutX="-1.0" layoutY="-1.0" prefHeight="76.0" prefWidth="390.0">
                             <columns>
                                 <TableColumn fx:id="pos" prefWidth="111.0" text="POS" />
-                                <TableColumn fx:id="fuhaobiao" prefWidth="278.0" text="符号表" />
+                                <TableColumn fx:id="fuhaobiaobiao" prefWidth="278.0" text="符号表" />
                             </columns>
                         </TableView>
                     </children>
