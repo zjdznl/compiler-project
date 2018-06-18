@@ -6,9 +6,16 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -188,10 +195,6 @@ public class FXMLDocumentController implements Initializable {
                 analyze.LetexAnalyze();
                 analyze.GetAnimatePos();
 
-                //语法
-                //List<Error> errorList = parser.getErrorList();
-                //List<String[]> derivationProcess = parser.getDerivationProcess();
-
                 ((TableColumn<Token, String>) cifahanghao).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenLine"));
                 ((TableColumn<Token, String>) cifaliehao).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenPos"));
                 ((TableColumn<Token, String>) token).setCellValueFactory(new PropertyValueFactory<Token, String>("tokenValue"));
@@ -208,22 +211,18 @@ public class FXMLDocumentController implements Initializable {
                 TableView<Error> call_cuowubiao = (TableView<Error>) cuowubiao;
                 TableView<Derivation> call_yufabiao = (TableView<Derivation>) yufabiao;
 
-
                 Parser parser = new Parser(str);
                 parser.startParsing();
-
 
                 for (int i = 0; i < analyze.animatePos.size(); i++) {
                     int tempX = analyze.animatePos.get(i).x;
                     int tempY = analyze.animatePos.get(i).y;
                     yuanwenjianneirong.selectRange(tempX - 1, tempY);
 
-                    //derivationProcess.get(i)[0];
-                    //derivationProcess.get(i)[1];
                     call_cifaibiao.setItems(FXCollections.observableArrayList(analyze.tokenList.subList(0, i)));
                     call_yufabiao.setItems(FXCollections.observableArrayList(parser.getDerivationProcess().subList(0, i)));
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -240,7 +239,21 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void qingkongfenxijieguo(ActionEvent event) {
 
-        Latex analyze = new Latex();
+        Canvas canvas = new Canvas(500, 620);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        huaJuXing(gc, 0, 0);
+        huaJuXing(gc, 1, 0);
+        huaJuXing(gc, 1, 1);
+        lianXian(gc, 0, 0, 1, 0);
+        huaJuXing(gc, 1, 1);
+        lianXian(gc, 0, 0, 1, 1);
+        huaJuXing(gc, 2, 0);
+        lianXian(gc, 1, 0, 2, 0);
+
+        yufashu.setContent(canvas);
+
+        /*Latex analyze = new Latex();
         Parser parser = new Parser();
 
         TableView<Token> call_cifaibiao = (TableView<Token>) cifabiao;
@@ -250,7 +263,21 @@ public class FXMLDocumentController implements Initializable {
         call_cifaibiao.setItems(FXCollections.observableArrayList(analyze.tokenList));
         call_yufabiao.setItems(FXCollections.observableArrayList(parser.getDerivationProcess()));
         call_cuowubiao.setItems(FXCollections.observableArrayList(parser.getErrorList()));
+*/
+    }
 
+    private GraphicsContext huaJuXing(GraphicsContext gc, int row, int col) {
+        gc.setStroke(Color.BLUE);
+        gc.setLineWidth(2);
+        gc.strokeRect(col * 130, row * 80, 100, 50);
+        return gc;
+    }
+
+    private GraphicsContext lianXian(GraphicsContext gc, int Frow, int Fcol, int Srow, int Scol) {
+        gc.setFill(Color.GREEN);
+        gc.setLineWidth(3);
+        gc.strokeLine(Fcol * 130 + 50, Frow * 80 + 50, Scol * 130 + 50, Srow * 80);
+        return gc;
     }
 
 }
