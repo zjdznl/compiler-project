@@ -59,7 +59,7 @@ public class AnalyzeGrammer {
         outputSelect();
         System.out.println();
 
-        outPutProductionsTofile();
+//        outPutProductionsTofile();
     }
 
 
