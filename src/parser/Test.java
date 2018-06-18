@@ -21,8 +21,7 @@ public class Test {
     }
 
     public static void testParser() {
-        Parser parser = new Parser( Config.DEFAULT_CODE );
-        parser.genPredictMap();
+        Parser parser = new Parser( Config.ERROR_CODE );
 
         for (Map.Entry<String, String> entry : parser.getPredictMap().entrySet()) {
             System.out.println( entry.getKey() + " : " + entry.getValue() );
@@ -34,9 +33,9 @@ public class Test {
             System.out.println( error );
         }
 
-        for (String[] strings : parser.getDerivationProcess()) {
-            System.out.println( String.format( "使用的产生式: %s, 对应的推导过程: %s", strings[0], strings[1] ) );
-        }
+//        for (String[] strings : parser.getDerivationProcess()) {
+//            System.out.println( String.format( "使用的产生式: %s, 对应的推导过程: %s", strings[0], strings[1] ) );
+//        }
     }
 
     public static void testStack() {

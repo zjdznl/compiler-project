@@ -24,6 +24,12 @@ public class Error {
         this.row = token.getTokenPos();
     }
 
+    public Error(String info, int line, int row) {
+        this.info = info;
+        this.line = line;
+        this.row = row;
+    }
+
     public String getInfo() {
         return info;
     }
@@ -63,7 +69,6 @@ public class Error {
                 "info='" + info + '\'' +
                 ", line=" + line +
                 ", row=" + row +
-                ", token=" + token +
-                '}';
+                "}";
     }
 }

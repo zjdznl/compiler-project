@@ -199,9 +199,6 @@ public class AnalyzeGrammer {
                         return true;
                     }
                 }
-//                if (rights[0].equals( "none" )) {
-//                    return true;
-//                }
             }
         }
         return false;
@@ -265,15 +262,6 @@ public class AnalyzeGrammer {
             }
             //全部处理后跳出循环
         } while (!flag);
-        //清除follow集中的#
-////        String left;
-////        for (String nonterminal : nonterminals) {
-////            left = nonterminal;
-////            for (int v = 0; v < follows.get( left ).size(); v++) {
-////                if (follows.get( left ).get( v ).equals( "#" ))
-////                    follows.get( left ).remove( v );
-////            }
-////        }
 
 //        清除follow集中的none
         String left;
@@ -459,7 +447,7 @@ public class AnalyzeGrammer {
 
     public void setProductions(ArrayList<Production> productions) {
         this.productions = productions;
-    }
+    }gi
 
     public ArrayList<String> getTerminals() {
         return terminals;
