@@ -8,20 +8,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.concurrent.Task;
 import latex.Latex;
+import parser.Error;
+import parser.Parser;
 import token.Token;
 
 /**
@@ -179,10 +182,24 @@ public class FXMLDocumentController implements Initializable {
         Task<Void> progressTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+
+                TableView<String> table = new TableView<>();
+
                 Latex analyze = new Latex(str);
                 analyze.LetexAnalyze();
                 analyze.GetAnimatePos();
+
+                Parser parser = new Parser();
+                parser.genPredictMap();
+                parser.startParsing();
+
+
+                //词法
                 List<Token> tokenList = analyze.tokenList;
+                //语法
+                List<Error> errorList = parser.getErrorList();
+                List<String[]> derivationProcess = parser.getDerivationProcess();
+
                 for (int i = 0; i <= analyze.animatePos.size(); i++) {
                     int tempX = analyze.animatePos.get(i).x;
                     int tempY = analyze.animatePos.get(i).y;
@@ -193,6 +210,17 @@ public class FXMLDocumentController implements Initializable {
                     tokenList.get(i).getTokenName();
                     tokenList.get(i).getTokenType();
 
+                    ObservableList<String> data = FXCollections.observableArrayList(tokenList.get(i).getTokenLine() + "");
+
+                    errorList.get(i).getInfo();
+                    errorList.get(i).getLine();
+                    errorList.get(i).getRow();
+
+                    table.setItems(data);
+                    table.getColumns().add((TableColumn<String, ?>) cifahanghao);
+
+                    //derivationProcess.get(i)[0];
+                    //derivationProcess.get(i)[1];
 
                     try {
                         Thread.sleep(500);
