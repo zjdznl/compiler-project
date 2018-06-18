@@ -1,4 +1,5 @@
 0 : program -> compoundstmt
+1 : stmt -> decl
 2 : stmt -> ifstmt
 3 : stmt -> whilestmt
 4 : stmt -> assgstmt
@@ -9,6 +10,12 @@
 9 : ifstmt -> if ( boolexpr ) then stmt else stmt
 10 : whilestmt -> while ( boolexpr ) stmt
 11 : assgstmt -> ID = arithexpr ;
+12 : decl -> type list ;
+13 : type -> int
+14 : type -> real
+15 : list -> ID list1
+16 : list1 -> , list
+17 : list1 -> none
 18 : boolexpr -> arithexpr boolop arithexpr
 19 : boolop -> <
 20 : boolop -> >
@@ -26,10 +33,3 @@
 32 : simpleexpr -> ID
 33 : simpleexpr -> NUM
 34 : simpleexpr -> ( arithexpr )
-1 : stmt -> decl
-12 : decl -> type list ;
-13 : type -> int
-14 : type -> real
-15 : list -> ID list1
-16 : list1 -> , list
-17 : list1 -> none

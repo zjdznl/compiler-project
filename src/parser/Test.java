@@ -1,5 +1,7 @@
 package parser;
 
+import utils.Config;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ public class Test {
     }
 
     public static void testParser() {
-        Parser parser = new Parser();
+        Parser parser = new Parser(Config.DEFAULT_CODE);
         parser.genPredictMap();
 
         for (Map.Entry<String, String> entry : parser.getPredictMap().entrySet()) {

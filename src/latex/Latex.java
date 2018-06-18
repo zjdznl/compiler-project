@@ -259,7 +259,7 @@ public class Latex {
     }
 
     //getter and setter
-    public String getText() {
+   /* public String getText() {
         return text;
     }
 
@@ -274,11 +274,11 @@ public class Latex {
     public void setSymbolTable(HashMap<String, Integer> symbolTable) {
         this.symbolTable = symbolTable;
     }
-
+*/
     public List<Token> getTokenList() {
         return tokenList;
     }
-
+/*
     public void setTokenList(List<Token> tokenList) {
         this.tokenList = tokenList;
     }
@@ -297,5 +297,5 @@ public class Latex {
 
     public void setAnimatePos(List<Point> animatePos) {
         this.animatePos = animatePos;
-    }
+    }*/
 }

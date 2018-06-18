@@ -1,8 +1,10 @@
 package parser;
 
 import latex.Latex;
+import semantic.ParserTree;
 import token.Token;
 import utils.Config;
+import utils.Util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,6 +38,7 @@ public class Parser {
 
     //当前 token 的上一个
     private Token preToken;
+    private ParserTree parserTree =new ParserTree();
 
     public static void loggerInit() {
 
@@ -100,6 +103,8 @@ public class Parser {
 
 
     public void startParsing() {
+        //是否为代码块开头节点
+        boolean isRoot=true;
         //用于打印日志
         loggerInit();
 
@@ -128,6 +133,11 @@ public class Parser {
                     LOGGER.info( String.format( "stack is:   %s,   token list is:  %s ", getStackString( stack ), getTokenListString( tokenList ) ) );
                     LOGGER.info( String.format( "栈顶值和token值相等，消！the value is %s \n", stack.peek() ) );
 
+                    //代码块语法分析完成进行语法数计算和三地址代码生成
+                    if(stack.peek().equals(";")){
+                        isRoot=true;
+                    }
+
                     //移除相同值
                     preToken = tokenList.remove( 0 );
                     stack.pop();
@@ -144,7 +154,10 @@ public class Parser {
             if ((right = predictMap.get( leftandinput )) != null) {
                 LOGGER.info( String.format( "表命中了！替换之前， stack is: %s,token list is: %s  ", getStackString( stack ), getTokenListString( tokenList ) ) );
                 LOGGER.info( "表命中了！使用产生式：    " + stack.peek() + " -> " + right );
-
+                //构建语法树
+                int pos=Util.getIndexByProductionString(stack.peek() + " -> " + right);
+                parserTree.BuildParserTree(tokenList.get(0),pos,isRoot);
+                isRoot=false;
                 //输出产生式和推导过程
 //                process = new StringBuilder();
 //                for (int i = stack.size() - 1; i > -1; i--) {

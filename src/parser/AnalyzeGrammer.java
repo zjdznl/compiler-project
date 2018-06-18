@@ -59,7 +59,7 @@ public class AnalyzeGrammer {
         outputSelect();
         System.out.println();
 
-//        outPutProductionsTofile();
+        outPutProductionsTofile();
     }
 
 
@@ -415,7 +415,7 @@ public class AnalyzeGrammer {
           将产生式输出到文件，每个产生式对应一个序号
          */
         try {
-            File file = new File( Config.PRODUCTIOS_FILE );
+            File file = new File( Config.DEFAULT_CODE );
             //if file doesn't exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
@@ -453,7 +453,7 @@ public class AnalyzeGrammer {
         }
     }
 
-    public ArrayList<Production> getProductions() {
+   /* public ArrayList<Production> getProductions() {
         return productions;
     }
 
@@ -491,6 +491,6 @@ public class AnalyzeGrammer {
 
     public void setFollows(HashMap<String, ArrayList<String>> follows) {
         this.follows = follows;
-    }
+    }*/
 
 }

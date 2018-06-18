@@ -24,7 +24,7 @@ public class Error {
         this.row = token.getTokenPos();
     }
 
-    public String getInfo() {
+   /* public String getInfo() {
         return info;
     }
 
@@ -54,7 +54,7 @@ public class Error {
 
     public void setToken(Token token) {
         this.token = token;
-    }
+    }*/
 
 
     @Override
