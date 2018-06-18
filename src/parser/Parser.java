@@ -71,6 +71,7 @@ public class Parser {
 
     public Parser() {
         this.inputSequence = Config.DEFAULT_CODE;
+        this.stack = new Stack<>();
         genPredictMap();
     }
 
